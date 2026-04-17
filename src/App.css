@@ -1,0 +1,356 @@
+/* ─── App Layout ──────────────────────────────────────────────────── */
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ─── Start Screen ────────────────────────────────────────────────── */
+
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, #0d0d1a 0%, #050508 100%);
+}
+
+.start-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.start-content {
+  text-align: center;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.start-title {
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.title-glow {
+  display: block;
+  color: #00f5ff;
+  text-shadow:
+    0 0 10px rgba(0, 245, 255, 0.5),
+    0 0 40px rgba(0, 245, 255, 0.3),
+    0 0 80px rgba(0, 245, 255, 0.1);
+}
+
+.title-laser {
+  display: block;
+  color: #ff00ff;
+  text-shadow:
+    0 0 10px rgba(255, 0, 255, 0.5),
+    0 0 40px rgba(255, 0, 255, 0.3),
+    0 0 80px rgba(255, 0, 255, 0.1);
+}
+
+.start-subtitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 3rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.start-button {
+  position: relative;
+  padding: 1rem 3rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(255, 0, 255, 0.15));
+  border: 1px solid rgba(0, 245, 255, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.start-button:hover {
+  border-color: rgba(0, 245, 255, 0.8);
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.25), rgba(255, 0, 255, 0.25));
+  box-shadow:
+    0 0 20px rgba(0, 245, 255, 0.3),
+    inset 0 0 20px rgba(0, 245, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.start-button:active {
+  transform: translateY(0);
+}
+
+.button-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00f5ff, #ff00ff, #00f5ff);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s;
+  filter: blur(8px);
+}
+
+.start-button:hover .button-glow {
+  opacity: 0.4;
+  animation: glowRotate 3s linear infinite;
+}
+
+@keyframes glowRotate {
+  from { filter: blur(8px) hue-rotate(0deg); }
+  to { filter: blur(8px) hue-rotate(360deg); }
+}
+
+.start-hint {
+  margin-top: 2rem;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.1em;
+}
+
+/* ─── Tracker Container ──────────────────────────────────────────── */
+
+.tracker-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1); /* Mirror entire stack — video + FX + trails all flip together */
+}
+
+.tracker-video {
+  display: none;
+}
+
+.tracker-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── FPS Counter ────────────────────────────────────────────────── */
+
+.fps-counter {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  z-index: 100;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ─── Status Overlay ─────────────────────────────────────────────── */
+
+.status-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 10, 0.9);
+  z-index: 50;
+}
+
+.status-overlay p {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.1em;
+  margin-top: 1.5rem;
+}
+
+.status-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(0, 245, 255, 0.1);
+  border-top-color: #00f5ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Control Panel ──────────────────────────────────────────────── */
+
+.control-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.control-panel-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: rgba(10, 10, 20, 0.7);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.control-panel-toggle:hover {
+  border-color: rgba(0, 245, 255, 0.5);
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.2);
+}
+
+.control-panel-body {
+  background: rgba(10, 10, 20, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 20px;
+  min-width: 220px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.control-panel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.05em;
+}
+
+.toggle-icon {
+  font-size: 1rem;
+}
+
+.toggle-switch {
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toggle-switch.active {
+  background: rgba(0, 245, 255, 0.3);
+  border-color: rgba(0, 245, 255, 0.5);
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.2);
+}
+
+.toggle-knob {
+  width: 18px;
+  height: 18px;
+  background: #555;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch.active .toggle-knob {
+  left: 22px;
+  background: #00f5ff;
+  box-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+}
+
+/* ─── Collapsed state ─────────────────────────────────────────────── */
+
+.control-panel.collapsed .control-panel-body {
+  display: none;
+}
